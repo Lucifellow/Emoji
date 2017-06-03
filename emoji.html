@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <title>Lab7</title>
+
+    <style type="text/css">
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="Canvas" width="1024" height="768"></canvas>
+    <script type="text/javascript">
+        window.onload = function() {
+
+            var canvas = document.getElementById("Canvas");
+            var ctx = canvas.getContext("2d");
+
+            // ARRAY FOR THE FRAMES
+            var imgs = [];
+            // TOTAL NUMBER OF FRAMES 
+            var numImages = 60;
+            // TOTAL NUMBER OF FRAMES LOADED SO FAR
+            var numImagesLoaded = 0;
+            // KEEPS TRACK OF WHICH FRAME WE'RE ON
+            var t = 0;
+            main();
+
+            function main() {
+                // LOAD FRAMES
+                for (var i = 0; i < numImages; i++) {
+                    // LOAD IMAGE AND PUT IT IN ARRAY
+                    // HERE
+                    var img = new Image();
+                    img.src = "icon/icon_0000" + i + ".png";
+                    imgs.push(img);
+                    img.onload = function() {
+                        // COUNT HOW MANY FRAMES HAVE BEEN LOADED, AND START THE ANIMATION WHEN ALL FRAMES HAVE BEEN LOADED
+                        // HERE
+                        numImagesLoaded = numImagesLoaded + 1;
+                        if (numImagesLoaded >= numImages) {
+
+                            startGame();
+
+                        }
+                    };
+                }
+
+
+            }
+
+            function startGame() {
+
+                updateGame();
+                window.requestAnimationFrame(drawGame);
+
+            }
+
+            function updateGame() {
+                // GAME AND ANIMATION LOGIC GOES HERE
+                // INCREMENT TO THE NEXT FRAME, LOOP WHEN AT THE END
+                t = t + 1;
+                t = t % numImages;
+                // CHANGE THE NUMBER OF MILLISECONDS TO ADJUST FRAME RATE
+                window.setTimeout(updateGame, 60);
+
+
+            }
+
+            function drawGame() {
+
+                // RENDERING HAPPENS HERE
+                // DRAW THE NEXT IMAGE IN THE ARRAY
+                ctx.clearRect(0, 0, ctx.width, ctx.height);
+                ctx.drawImage(imgs[t], 300, 125)
+                window.requestAnimationFrame(drawGame);
+
+            }
+
+
+        }
+    </script>
+</body>
+
+</html>
